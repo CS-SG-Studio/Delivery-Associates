@@ -7,10 +7,48 @@ Over the last year, the coronavirus has impacted the lives of billions of people
 <p align="center"><img width="600" alt="Screen Shot 2021-04-19 at 4 43 04 PM" src="https://user-images.githubusercontent.com/57520931/115300799-65989c80-a12e-11eb-9504-08602b4e5899.png"></p>
 
 ## Setup Instructions
+### Cloning Git Repository
+In order to get started, either open up a **Terminal** or open **Virtual Studio Code**, go to the **Terminal** tab, and select **New Terminal**. After that, enter the following commands into your terminal.
+```
+git clone https://github.com/CS-SG-Studio/Delivery-Associates.git
+cd Delivery-Associates
+```
+This should put you in the Github Repository.
+
+### React Project Setup and Usage
 _TBD_
+
+### Commit + Push Instructions
+After making changes to the code, in order to push your changes to the remote Git repository, type the following:
+```
+git pull          (to check that code is up to date)
+git add .
+git commit -m "[Explain changes to code here]"
+git push
+```
+Because we will be working out of multiple branches, here are a few branch commands to get us started:
+```
+git checkout -b <new-branch-name>      # Creates a new branch locally
+git push -u origin <new-branch-name>   # Saves new branch to remote repository
+git branch                             # Shows all available branches
+git checkout <branch-name>             # Switch to a different branch
+git branch -d <branch-name>            # Deletes local branch
+git push origin :<branch-name>         # Deletes remote branch
+git merge <branch-name>                # Merges current branch with <branch-name> and saves over current branch
+```
 
 ## Usage
 _TBD_
 
 ## Index Design
+### Data
+- [Our World in Data Covid Vaccination Data](https://ourworldindata.org/covid-vaccinations)
+- [Country Adult Mortality Rate Data WHO](https://www.who.int/data/gho/data/indicators/indicator-details/GHO/adult-mortality-rate-(probability-of-dying-between-15-and-60-years-per-1000-population))
+- [Country Life Expectancy Data WHO](https://www.who.int/data/gho/data/indicators/indicator-details/GHO/life-expectancy-at-birth-(years))
+- [Country Medical Doctors per 10,000 People WHO](https://www.who.int/data/gho/data/indicators/indicator-details/GHO/medical-doctors-(per-10-000-population))
+- [WHO COVID Dashboard](https://covid19.who.int/table?tableDay=yesterday)
+- [UNICEF Country Data](https://unicef.shinyapps.io/wuenic-analytics-2020)
+- [Country Socioeconomic Status Indicator Data](https://www.visualcapitalist.com/ranked-the-social-mobility-of-82-countries/)
+- [Country GDP Data WorldoMeters](https://www.worldometers.info/gdp/gdp-by-country/)
+
 _TBD_
