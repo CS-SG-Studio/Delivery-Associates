@@ -27,7 +27,7 @@ cd vaccine-equity-tracker
 npm start
 ```
 
-**In order to run a React App for testing purposes, type `cd vaccine-equity-tracker` and then type `npm start`.**
+In order to run a React App for testing purposes, type `cd vaccine-equity-tracker` and then type `npm start`.
 
 
 
