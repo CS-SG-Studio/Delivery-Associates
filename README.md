@@ -21,10 +21,10 @@ _TBD_
 ### Commit + Push Instructions
 After making changes to the code, in order to push your changes to the remote Git repository, type the following:
 ```
-git pull          (to check that code is up to date)
-git add .
-git commit -m "[Explain changes to code here]"
-git push
+git pull                               # To make sure code is up to date
+git add .                              # Adds all modified files to commit (Sometimes we only want to add one)
+git commit -m "[Explain code changes]" # Commits selected files with Commit message as description
+git push                               # Pushes commit to remote Git repository
 ```
 Because we will be working out of multiple branches, here are a few branch commands to get us started:
 ```
