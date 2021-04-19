@@ -16,7 +16,20 @@ cd Delivery-Associates
 This should put you in the Github Repository.
 
 ### React Project Setup and Usage
-_TBD_
+Download NodeJS: `https://nodejs.org/en/download/`
+
+Here are the general setup instructions for a React Project (We will only need to do this once).
+```
+npm install <package-name>
+npm install -g create-react-app
+npx create-react-app vaccine-equity-tracker
+cd vaccine-equity-tracker
+npm start
+```
+
+**In order to run a React App for testing purposes, type `cd vaccine-equity-tracker` and then type `npm start`.**
+
+
 
 ### Commit + Push Instructions
 After making changes to the code, in order to push your changes to the remote Git repository, type the following:
