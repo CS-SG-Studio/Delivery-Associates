@@ -27,9 +27,11 @@ cd vaccine-equity-tracker
 npm start
 ```
 
-In order to run a React App for testing purposes, type `cd vaccine-equity-tracker` and then type `npm start`.
-
-
+In order to run a React App for testing purposes, navigate to the `Delivery-Associates` repo and then run the following commands:
+```
+cd vaccine-equity-tracker
+npm start
+```
 
 ### Commit + Push Instructions
 After making changes to the code, in order to push your changes to the remote Git repository, type the following:
