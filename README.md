@@ -8,7 +8,7 @@ Over the last year, the coronavirus has impacted the lives of billions of people
 
 ## Setup Instructions
 ### Cloning Git Repository
-In order to get started, either open up a **Terminal** by typing **Command + SpaceBar**, typing **"Terminal"** into the search bar, and then clicking on the application. You can also open **Virtual Studio Code**, go to the **Terminal** tab, and select **New Terminal**. After that, enter the following commands into your terminal.
+In order to get started, open up a **Terminal** by typing **Command + SpaceBar**, typing **"Terminal"** into the search bar, and then clicking on the application. You can also open **Virtual Studio Code**, go to the **Terminal** tab, and select **New Terminal**. After that, enter the following commands into your terminal.
 ```
 git clone https://github.com/CS-SG-Studio/Delivery-Associates.git
 cd Delivery-Associates
