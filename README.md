@@ -18,7 +18,7 @@ This should put you in the Github Repository.
 ### React Project Setup and Usage
 Download NodeJS: `https://nodejs.org/en/download/`
 
-Here are the general setup instructions for a React Project (We will only need to do this once).
+Here are the general setup instructions for a React Project **(_SKIP THIS STEP FROM NOW ON_)**.
 ```
 npm install <package-name>
 npm install -g create-react-app
