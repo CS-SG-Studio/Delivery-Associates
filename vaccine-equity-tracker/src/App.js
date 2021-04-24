@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css';
-import Map from './components/Map'
+import WorldMap from './components/WorldMap'
+import NavBar from './components/NavBar'
 
 function App() {
   return (
-    <div className="App">
-      <Map/>
+    <div>
+      <NavBar/>
+      <WorldMap/>
     </div>
   );
 }
