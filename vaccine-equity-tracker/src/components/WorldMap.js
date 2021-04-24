@@ -265,6 +265,19 @@ var countryHoverColor = am4core.color("#333333");
 var activeCountryColor = am4core.color("#0f0f0f");
 
 function displayMap(props) {
+  function resetHover() {
+    polygonSeries.mapPolygons.each(function(polygon) {
+      polygon.isHover = false;
+    })
+  }
+  function showWorld() {
+    resetHover();
+    polygonSeries.mapPolygons.each(function(polygon) {
+      polygon.isActive = false;
+    })
+    chart.goHome();
+  }
+
   var container = am4core.create("chartdiv", am4core.Container);
   container.width = am4core.percent(100);
   container.height = am4core.percent(100);
@@ -286,21 +299,22 @@ function displayMap(props) {
   chart.zoomEasing = am4core.ease.sinOut;
   chart.panBehavior = "move";
   chart.homeGeoPoint = { longitude: 0, latitude: -2 };
+  chart.zoomControl.minusButton.events.on("hit", showWorld);
+  chart.seriesContainer.background.events.on("hit", showWorld);
+  chart.seriesContainer.background.events.on("over", resetHover);
 
   let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
   polygonSeries.dataFields.id = "id";
-  polygonSeries.exclude = ["AQ"]; // Antarctica is excluded in non-globe projection
+  polygonSeries.exclude = ["AQ"];
   polygonSeries.useGeodata = true;
   polygonSeries.nonScalingStroke = true;
   polygonSeries.strokeWidth = 0.5;
+  polygonSeries.calculateVisualCenter = true;
 
   let polygonTemplate = polygonSeries.mapPolygons.template;
-  polygonTemplate.fill = countryColor;
-  polygonTemplate.fillOpacity = 1
-  polygonTemplate.stroke = countryStrokeColor;
   polygonTemplate.strokeOpacity = 0.15;
-  polygonTemplate.setStateOnChildren = true;
   polygonTemplate.tooltipPosition = "fixed";
+  polygonTemplate.tooltipText = "[bold]{name}: {value}[/] [font-size:10px]\n Equitable Vaccine Index";
   
   polygonSeries.data = [
     { id: "AF", value: 60.524 },
@@ -492,7 +506,7 @@ function displayMap(props) {
 
   var polygonActiveState = polygonTemplate.states.create("active")
   polygonActiveState.properties.fill = activeCountryColor;
-
+  
   return chart;
 }
 
