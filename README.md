@@ -2,13 +2,14 @@
 _**Faris Bdair, Julia Wang, Claire Yu, AJ Arnolie**_
 
 ## Project Overview
-Over the last year, the coronavirus has impacted the lives of billions of people around the world. But in the last few months, vaccine development for this virus has advanced rapidly with a number of approved vaccines and more in development. Many experts identify that success in this vaccination distribution and adoption process is critical in ending this pandemic and ensuring the health and safety of people across the world. To address this problem, we will **develop a Global Vaccine Dashboard with COVID and demographic data highlighting (in)equity in testing and vaccine rollout.**
+Over the last year, the coronavirus has impacted the lives of billions of people around the world. But in the last few months, vaccine development for this virus has advanced rapidly with a number of approved vaccines and more in development. Many experts identify that success in this vaccination distribution and adoption process is critical in ending this pandemic and ensuring the health and safety of people across the world. To address issues with vaccine distribution, we will **develop a Global Vaccine Dashboard with COVID and demographic data highlighting (in)equity in testing and vaccine rollout.**
 
-<p align="center"><img width="600" alt="Screen Shot 2021-04-19 at 4 43 04 PM" src="https://user-images.githubusercontent.com/57520931/115300799-65989c80-a12e-11eb-9504-08602b4e5899.png"></p>
+<p align="center"><img width="900" alt="Screen Shot 2021-04-26 at 3 11 50 PM" src="https://user-images.githubusercontent.com/57520931/116137628-c6315780-a6a1-11eb-91c4-4ece8e148281.png">
+</p>
 
 ## Setup Instructions
 ### Cloning Git Repository
-In order to get started, either open up a **Terminal** or open **Virtual Studio Code**, go to the **Terminal** tab, and select **New Terminal**. After that, enter the following commands into your terminal.
+In order to get started, open up a **Terminal** by typing **Command + SpaceBar**, typing **"Terminal"** into the search bar, and then clicking on the application. You can also open **Virtual Studio Code**, go to the **Terminal** tab, and select **New Terminal**. After that, enter the following commands into your terminal.
 ```
 git clone https://github.com/CS-SG-Studio/Delivery-Associates.git
 cd Delivery-Associates
@@ -18,7 +19,7 @@ This should put you in the Github Repository.
 ### React Project Setup and Usage
 Download NodeJS: `https://nodejs.org/en/download/`
 
-Here are the general setup instructions for a React Project (We will only need to do this once).
+Here are the general setup instructions for a React Project **(_SKIP THIS STEP FROM NOW ON_)**.
 ```
 npm install <package-name>
 npm install -g create-react-app
@@ -27,9 +28,11 @@ cd vaccine-equity-tracker
 npm start
 ```
 
-In order to run a React App for testing purposes, type `cd vaccine-equity-tracker` and then type `npm start`.
-
-
+In order to run a React App for testing purposes, navigate to the `Delivery-Associates` repo and then run the following commands:
+```
+cd vaccine-equity-tracker
+npm start
+```
 
 ### Commit + Push Instructions
 After making changes to the code, in order to push your changes to the remote Git repository, type the following:
