@@ -47,7 +47,8 @@ function displayMap() {
   let polygonTemplate = polygonSeries.mapPolygons.template;
   polygonTemplate.strokeOpacity = 0.15;
   polygonTemplate.tooltipPosition = "fixed";
-  polygonTemplate.tooltipText = "[bold]{name}: {value}[/] [font-size:10px]\n Equitable Vaccine Index";
+  // TODO: Figure out how to get multiple different values in here
+  polygonTemplate.tooltipText = "[font-size:20px bold]{name}: \n[bold]{value}[/] [font-size:10px] Equitable Vaccine Index \n[bold]{value}[/] [font-size:10px] Mortality Rate\n[bold]{value}[/] [font-size:10px] % of Global GDP";
   
   polygonSeries.data = [
     { id: "AF", value: 60.524 },
