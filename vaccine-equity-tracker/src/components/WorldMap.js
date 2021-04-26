@@ -226,6 +226,9 @@ function displayMap() {
     { id: "ZW", value: 58.142 }
   ];
 
+  // Get input from Search Bar
+  //chart.zoomToMapObject(polygonSeries.getPolygonById("IN"));
+
   polygonSeries.heatRules.push({
     property: "fill",
     target: polygonSeries.mapPolygons.template,

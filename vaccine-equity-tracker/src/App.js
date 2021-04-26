@@ -7,7 +7,7 @@ import Footer from './components/Footer'
 // TODO: Figure out how to make everything fit on screen Flex thingy?
 function App() {
   return (
-    <div>
+    <div className="App">
       <NavBar/>
       <WorldMap/>
       <Footer/>

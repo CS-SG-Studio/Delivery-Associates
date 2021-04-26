@@ -15,12 +15,15 @@ function NavBar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">About the Index</NavDropdown.Item>
+            <Nav.Link href="#about">About the Index</Nav.Link>
+            <NavDropdown title="More Info" id="basic-nav-dropdown">
+              <NavDropdown.Item><a href="https://vaccinefinder.org/search/" className="link">
+                Find Vaccine Appointment</a></NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="cdc.gov/coronavirus/2019-ncov/index.html">COVID Information</NavDropdown.Item>
+              <NavDropdown.Item><a href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" className="link">
+                COVID-19 Information</a></NavDropdown.Item>
+              <NavDropdown.Item><a href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html" className="link">
+                Vaccine Information</a></NavDropdown.Item>
             </NavDropdown>
           </Nav>
           <Form inline>
