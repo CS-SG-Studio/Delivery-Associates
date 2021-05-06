@@ -17,13 +17,13 @@ function Footer() {
     <Navbar bg="dark" variant="dark">
       <Nav className="mr-auto">
         <Navbar.Brand href="#home">
-          CS52: Computer Science + Social Good Studio
+          CS52
         </Navbar.Brand>
       </Nav>
       <ButtonGroup aria-label="Basic example" className="mr-sm-2">
-          <Button variant="secondary" onClick={() => setValue(1)}>Index</Button>
-          <Button variant="secondary" onClick={() => setValue(2)}>GDP</Button>
-          <Button variant="secondary" onClick={() => setValue(3)}>Mortality</Button>
+          <Button variant="secondary" onClick={() => setValue(1)}>Vaccination Rate</Button>
+          <Button variant="secondary" onClick={() => setValue(2)}>GDP per Capita</Button>
+          <Button variant="secondary" onClick={() => setValue(3)}>Life Expectancy</Button>
       </ButtonGroup>
     </Navbar>
   );

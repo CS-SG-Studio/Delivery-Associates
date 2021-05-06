@@ -14,7 +14,6 @@ function NavBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#about">About the Index</Nav.Link>
             <NavDropdown title="More Info" id="basic-nav-dropdown">
               <NavDropdown.Item><a href="https://vaccinefinder.org/search/" className="link">
