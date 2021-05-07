@@ -22,7 +22,7 @@ function Footer() {
       </Nav>
       <ButtonGroup aria-label="Basic example" className="mr-sm-2">
           <Button variant="secondary" onClick={() => setValue(1)}>Vaccination Rate</Button>
-          <Button variant="secondary" onClick={() => setValue(2)}>GDP per Capita</Button>
+          <Button variant="secondary" onClick={() => setValue(2)}>GDP</Button>
           <Button variant="secondary" onClick={() => setValue(3)}>Life Expectancy</Button>
       </ButtonGroup>
     </Navbar>

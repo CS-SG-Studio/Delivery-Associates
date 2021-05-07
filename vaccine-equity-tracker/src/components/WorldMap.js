@@ -63,7 +63,7 @@ function displayMap() {
   // Adds countries to map
   let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
   polygonSeries.exclude = ["AQ"];
-  polygonSeries.dataFields.value = "index"; // This is how we switch data types (corresponds to dict key)
+  polygonSeries.dataFields.value = "cases"; // This is how we switch data types (corresponds to dict key)
   polygonSeries.useGeodata = true;
   polygonSeries.calculateVisualCenter = true;
 
@@ -81,14 +81,16 @@ function displayMap() {
         var d = data[i];
         // Get data from  date, make sure iso_code is 3 chars (non 3 char iso_codes are usually for continents)
         if (d.date === "2021-04-30" && d.iso_code.length === 3) { 
-          // Build dictionary and push to list          
+          // Build dictionary and push to list     
+          console.log(d.iso_code, d.total_cases_per_million)     
           ldata.push({"id"    : countries.alpha3ToAlpha2(d.iso_code),
-                      "index" : d.total_cases_per_million,
+                      "cases" : d.total_cases_per_million,
                       "mortality" : d.life_expectancy,
                       "gdp" : d.gdp_per_capita});
         }
       }
       // Updates map data
+      console.log(ldata)
       polygonSeries.data = ldata;
     });
     ev.target.data = [];
@@ -101,7 +103,7 @@ function displayMap() {
   // Settings for info popup when hover over a country
   polygonTemplate.tooltipPosition = "fixed";
   // String that is displayed
-  polygonTemplate.tooltipText = "[font-size:20px bold]{name}: \n[bold]{index}[/] [font-size:14px] Equitable Vaccine Index \n[bold]{mortality}[/] [font-size:14px] Year Life Expectancy\n[bold]{gdp}[/] [font-size:14px] GDP per Capita";
+  polygonTemplate.tooltipText = "[font-size:20px bold]{name}: \n[bold]{cases}[/] [font-size:14px] Equitable Vaccine Index \n[bold]{mortality}[/] [font-size:14px] Year Life Expectancy\n[bold]{gdp}[/] [font-size:14px] GDP per Capita";
   
 
   // Code for search bar - Will zoom in on whatever country is in "United States" place
