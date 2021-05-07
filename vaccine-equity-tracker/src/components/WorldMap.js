@@ -103,7 +103,7 @@ function displayMap() {
   // Settings for info popup when hover over a country
   polygonTemplate.tooltipPosition = "fixed";
   // String that is displayed
-  polygonTemplate.tooltipText = "[font-size:20px bold]{name}: \n[bold]{cases}[/] [font-size:14px] Equitable Vaccine Index \n[bold]{mortality}[/] [font-size:14px] Year Life Expectancy\n[bold]{gdp}[/] [font-size:14px] GDP per Capita";
+  polygonTemplate.tooltipText = "[font-size:24px bold]{name}[font-size:5px]\n\n[font-size:20px bold]{cases}[/] [font-size:14px] Cases per Million [font-size:6px]\n\n[font-size:20px bold]{mortality}[/] [font-size:14px] Year Life Expectancy[font-size:6px]\n\n[font-size:20px bold]{gdp}[/] [font-size:14px] GDP per Capita";
   
 
   // Code for search bar - Will zoom in on whatever country is in "United States" place
