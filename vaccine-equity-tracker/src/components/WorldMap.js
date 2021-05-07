@@ -119,7 +119,8 @@ function displayMap() {
     property: "fill",
     target: polygonSeries.mapPolygons.template,
     min: am4core.color("#ff0000"), //#ff0000
-    max: am4core.color("#fff5f5") // aec6cf
+    max: am4core.color("#ffd5d5"), // aec6cf
+    logarithmic: true // Added this because it adjust to concentration around the max or min
   });
 
   // Determines what happens when you hover over a country
