@@ -14,6 +14,8 @@ var countryHoverColor = am4core.color("#333333");
 var activeCountryColor = am4core.color("#0f0f0f");
 var backgroundColor = am4core.color("#ffffff");
 
+const data_fields = ["cases", "gdp", "mortality"];
+
 // Display Map is the function that is called when the map is created
 // You can see this function call down below in componentDidMount() and componentDidUpdate()
 function displayMap() {
@@ -63,7 +65,7 @@ function displayMap() {
   // Adds countries to map
   let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
   polygonSeries.exclude = ["AQ"];
-  polygonSeries.dataFields.value = "cases"; // This is how we switch data types (corresponds to dict key)
+  polygonSeries.dataFields.value = data_fields[giveValue()]; // This is how we switch data types (corresponds to dict key)
   polygonSeries.useGeodata = true;
   polygonSeries.calculateVisualCenter = true;
 
@@ -135,9 +137,32 @@ function displayMap() {
   return chart;
 }
 
+var data_value = 0;
+
+const giveValue = () => {
+  return data_value;
+}
+
+const getvalue = (val) => {
+  data_value = val;
+  return val;
+}
+
 class WorldMap extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        data: this.props.dataParentToChild
+    }
+}
+
   componentDidMount() { this.chart = displayMap(this.props); }
-  componentDidUpdate() { this.chart = displayMap(this.props); }
+  componentDidUpdate(prevProps) { 
+    if (this.props.dataParentToChild !== prevProps.dataParentToChild) {
+      this.setState({data: getvalue(this.props.dataParentToChild)})
+    }
+    this.chart = displayMap(this.props); 
+  }
   componentWillUnmount() { if (this.chart) { this.chart.dispose(); }  }
   render() {
     return (<div id="chartdiv" style={{width:"100%", height:"89vh"}}></div>);
