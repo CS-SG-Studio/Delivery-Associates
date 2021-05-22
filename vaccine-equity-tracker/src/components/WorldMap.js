@@ -1,4 +1,3 @@
-import Slider from '@material-ui/core/Slider';
 import React, { Component } from 'react';
 import './WorldMap.css';
 import * as am4core from "@amcharts/amcharts4/core";
@@ -18,9 +17,12 @@ var backgroundColor = am4core.color("#ffffff");
 
 const data_fields = ["cases", "gdp", "mortality"];
 
+const time_convert = {0:"2020-03-20", 10:"2020-04-01", 20:"2020-05-01", 30:"2020-06-01", 40:"2020-07-01", 50:"2020-08-01", 60:"2020-09-01", 70:"2020-10-01", 
+                      80:"2020-11-01", 90:"2020-12-01", 100:"2021-01-01", 110:"2021-02-01", 120:"2021-03-01", 130:"2021-04-01", 140:"2021-05-01", 146:"2021-05-21"};
+
 // Display Map is the function that is called when the map is created
 // You can see this function call down below in componentDidMount() and componentDidUpdate()
-function displayMap() {
+function displayMap(props) {
   function resetHover() {
     polygonSeries.mapPolygons.each(function(polygon) {
       polygon.isHover = false;
@@ -95,7 +97,7 @@ function displayMap() {
       for (var i = 0; i < data.length; i++) { 
         var d = data[i];
         // Get data from  date, make sure iso_code is 3 chars (non 3 char iso_codes are usually for continents)
-        if (d.date === "2021-04-30" && d.iso_code.length === 3) { 
+        if (d.date === time_convert[props.sliderVal] && d.iso_code.length === 3) { 
           // Build dictionary and push to list     
           ldata.push({"id"    : countries.alpha3ToAlpha2(d.iso_code),
                       "cases" : d.total_cases_per_million,
@@ -160,22 +162,10 @@ const getvalue = (val) => {
   return val;
 }
 
-// function valuetext(value) {
-//   return `${value}°C`;
-// }
-
-{/* <Slider
-        defaultValue={30} getAriaValueText={valuetext}
-        aria-labelledby="discrete-slider"
-        valueLabelDisplay="auto"
-        aria-label="pretto slider"
-        step={16} marks min={10} max={110}
-      /> */}
-
 class WorldMap extends Component {
   constructor(props) {
     super(props);
-    this.state = {data: this.props.dataParentToChild, country: this.props.searchResult}
+    this.state = {data: this.props.dataParentToChild, country: this.props.searchResult, sliderVal: this.props.sliderVal}
   }
 
   runSearch(loc) {
@@ -191,8 +181,8 @@ class WorldMap extends Component {
     this.polygonSeries = vals.polygonSeries; 
   }
   componentDidUpdate(prevProps) { 
-    if (this.props.dataParentToChild !== prevProps.dataParentToChild) {
-      this.setState({data: getvalue(this.props.dataParentToChild)});
+    if (this.props.dataParentToChild !== prevProps.dataParentToChild || this.props.sliderVal !== prevProps.sliderVal) {
+      this.setState({data: getvalue(this.props.dataParentToChild), sliderVal: this.props.sliderVal});
       let vals = displayMap(this.props);
       this.chart = vals.chart;
       this.polygonSeries = vals.polygonSeries;

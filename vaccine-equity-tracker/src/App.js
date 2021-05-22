@@ -1,8 +1,11 @@
 import React from 'react';
 import './App.css';
+
 import WorldMap from './components/WorldMap'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
+import MySlider from './components/MySlider'
+
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
@@ -10,9 +13,12 @@ class App extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = {data: 0, isShown: false, country: "-"}
+    this.state = {data: 0, isShown: false, country: "-", sliderVal: 146}
+    
     this.showModal = this.showModal.bind(this);
     this.searchCountry = this.searchCountry.bind(this);
+    this.sendSliderVal = this.sendSliderVal.bind(this);
+    this.handleCallback = this.handleCallback.bind(this);
   }
 
   handleCallback = (childData) =>{
@@ -21,6 +27,10 @@ class App extends React.Component {
 
   searchCountry = (countrySelected) =>{
     this.setState({country: countrySelected})
+  }
+
+  sendSliderVal = (val) =>{
+    this.setState({sliderVal: val})
   }
 
   showModal() {
@@ -33,6 +43,7 @@ class App extends React.Component {
       return (
       <div className="App">
         <NavBar showModal={this.showModal} searchCountry={this.searchCountry}/>
+        <MySlider sendSliderVal={this.sendSliderVal}/>
         <Modal show={this.state.isShown} onHide={() => {this.setState({isShown: false});}} size="lg" centered>
           <Modal.Header closeButton><Modal.Title>About the Index</Modal.Title></Modal.Header>
           <Modal.Body>
@@ -45,7 +56,7 @@ class App extends React.Component {
           </Modal.Body>
           <Modal.Footer><Button variant="danger" onClick={() => {this.setState({isShown: false});}}>Close</Button></Modal.Footer>
         </Modal>
-        <WorldMap dataParentToChild = {data} searchResult = {this.state.country}/>
+        <WorldMap dataParentToChild = {data} searchResult = {this.state.country} sliderVal = {this.state.sliderVal}/>
         <Footer parentCallback = {this.handleCallback}/>
       </div>
     );
