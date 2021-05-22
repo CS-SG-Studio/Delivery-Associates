@@ -1,7 +1,9 @@
+import Slider from '@material-ui/core/Slider';
 import React, { Component } from 'react';
 import './WorldMap.css';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
+import * as am4charts from "@amcharts/amcharts4/charts";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 
 // Import necessary country data in English
@@ -52,6 +54,16 @@ function displayMap() {
   chart.seriesContainer.background.events.on("hit", showWorld);
   chart.seriesContainer.background.events.on("over", resetHover);
 
+  // Add home button to zoom out
+  let button = chart.chartContainer.createChild(am4core.Button);
+  button.padding(7, 5, 7, 5);
+  button.width = 30;
+  button.align = "right";
+  button.marginRight = 5;
+  button.icon = new am4core.Sprite();
+  button.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
+  button.events.on("hit", function() {chart.goHome();});
+
   // Sets background color
   chart.background.fill = backgroundColor;
   chart.backgroundSeries.mapPolygons.template.polygon.fill = backgroundColor;
@@ -68,6 +80,7 @@ function displayMap() {
   polygonSeries.dataFields.value = data_fields[giveValue()]; // This is how we switch data types (corresponds to dict key)
   polygonSeries.useGeodata = true;
   polygonSeries.calculateVisualCenter = true;
+  //polygonSeries.mapPolygons.template.hoverOnFocus = true; 
 
   // Pulls data from OWID github and sets it as map data
   chart.dataSource.parser = new am4core.CSVParser();
@@ -84,7 +97,6 @@ function displayMap() {
         // Get data from  date, make sure iso_code is 3 chars (non 3 char iso_codes are usually for continents)
         if (d.date === "2021-04-30" && d.iso_code.length === 3) { 
           // Build dictionary and push to list     
-          console.log(d.iso_code, d.total_cases_per_million)     
           ldata.push({"id"    : countries.alpha3ToAlpha2(d.iso_code),
                       "cases" : d.total_cases_per_million,
                       "mortality" : d.life_expectancy,
@@ -92,7 +104,6 @@ function displayMap() {
         }
       }
       // Updates map data
-      console.log(ldata)
       polygonSeries.data = ldata;
     });
     ev.target.data = [];
@@ -105,16 +116,7 @@ function displayMap() {
   // Settings for info popup when hover over a country
   polygonTemplate.tooltipPosition = "fixed";
   // String that is displayed
-  polygonTemplate.tooltipText = "[font-size:24px bold]{name}[font-size:5px]\n\n[font-size:20px bold]{cases}[/] [font-size:14px] Cases per Million [font-size:6px]\n\n[font-size:20px bold]{mortality}[/] [font-size:14px] Year Life Expectancy[font-size:6px]\n\n[font-size:20px bold]{gdp}[/] [font-size:14px] GDP per Capita";
-  
-
-  // Code for search bar - Will zoom in on whatever country is in "United States" place
-  chart.events.on("ready", function(ev) {
-    let val = countries.getAlpha2Code("United States", "en");
-    if (countries.isValid(val)) {
-      chart.zoomToMapObject(polygonSeries.getPolygonById(val));
-    }
-  }); 
+  polygonTemplate.tooltipText = "[font-size:24px bold]{name}[font-size:5px]\n\n[font-size:20px bold]{cases}[/] [font-size:14px] Cases per Million[font-size:6px]\n\n[font-size:20px bold]{gdp}[/] [font-size:14px] GDP per Capita[font-size:6px]\n\n[font-size:20px bold]{mortality}[/] [font-size:14px] Year Life Expectancy";
 
   // Determines country color range
   polygonSeries.heatRules.push({
@@ -125,6 +127,16 @@ function displayMap() {
     logarithmic: true // Added this because it adjust to concentration around the max or min
   });
 
+  // Create Legend for Heat Map
+  let heatLegend = chart.createChild(am4charts.HeatLegend);
+  heatLegend.series = polygonSeries;
+  heatLegend.valign = "bottom";
+  heatLegend.align = "center";
+  heatLegend.fontWeight = "bold";
+  heatLegend.fontSize = 15;
+  heatLegend.marginBottom = 10;
+  heatLegend.width = am4core.percent(90);
+
   // Determines what happens when you hover over a country
   var polygonHoverState = polygonTemplate.states.create("hover");
   polygonHoverState.transitionDuration = 700;
@@ -133,8 +145,8 @@ function displayMap() {
   // Determine what is the default state for a country
   var polygonActiveState = polygonTemplate.states.create("active")
   polygonActiveState.properties.fill = activeCountryColor;
-  
-  return chart;
+
+  return {chart, polygonSeries};
 }
 
 var data_value = 0;
@@ -148,20 +160,46 @@ const getvalue = (val) => {
   return val;
 }
 
-class WorldMap extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-        data: this.props.dataParentToChild
-    }
-}
+// function valuetext(value) {
+//   return `${value}°C`;
+// }
 
-  componentDidMount() { this.chart = displayMap(this.props); }
+{/* <Slider
+        defaultValue={30} getAriaValueText={valuetext}
+        aria-labelledby="discrete-slider"
+        valueLabelDisplay="auto"
+        aria-label="pretto slider"
+        step={16} marks min={10} max={110}
+      /> */}
+
+class WorldMap extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {data: this.props.dataParentToChild, country: this.props.searchResult}
+  }
+
+  runSearch(loc) {
+    let val = countries.getAlpha2Code(loc, "en");
+    if (countries.isValid(val)) {
+      this.chart.zoomToMapObject(this.polygonSeries.getPolygonById(val));
+    }
+  }
+
+  componentDidMount() { 
+    let vals = displayMap(this.props);
+    this.chart = vals.chart;
+    this.polygonSeries = vals.polygonSeries; 
+  }
   componentDidUpdate(prevProps) { 
     if (this.props.dataParentToChild !== prevProps.dataParentToChild) {
-      this.setState({data: getvalue(this.props.dataParentToChild)})
+      this.setState({data: getvalue(this.props.dataParentToChild)});
+      let vals = displayMap(this.props);
+      this.chart = vals.chart;
+      this.polygonSeries = vals.polygonSeries;
+    } 
+    if (this.props.searchResult !== prevProps.searchResult) {
+      this.runSearch(this.props.searchResult);
     }
-    this.chart = displayMap(this.props); 
   }
   componentWillUnmount() { if (this.chart) { this.chart.dispose(); }  }
   render() {
