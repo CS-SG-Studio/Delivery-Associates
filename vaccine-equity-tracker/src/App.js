@@ -14,7 +14,7 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {data: 0, isShown: false, country: "-", sliderVal: 146}
-    
+
     this.showModal = this.showModal.bind(this);
     this.searchCountry = this.searchCountry.bind(this);
     this.sendSliderVal = this.sendSliderVal.bind(this);
@@ -45,14 +45,25 @@ class App extends React.Component {
         <NavBar showModal={this.showModal} searchCountry={this.searchCountry}/>
         <MySlider sendSliderVal={this.sendSliderVal}/>
         <Modal show={this.state.isShown} onHide={() => {this.setState({isShown: false});}} size="lg" centered>
-          <Modal.Header closeButton><Modal.Title>About the Index</Modal.Title></Modal.Header>
+          <Modal.Header closeButton><Modal.Title>About the Data</Modal.Title></Modal.Header>
           <Modal.Body>
-          <Modal.Title>Need to Fill this in With Relevant Info about Data and Stuff!!!</Modal.Title>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget enim lobortis, bibendum justo vitae, sodales metus. Nam commodo eros augue, eget sodales eros fringilla at. Praesent posuere, nulla blandit pharetra luctus, arcu nisi blandit dolor, at mollis dolor turpis non lorem. Duis porttitor, mi vel fringilla faucibus, diam mi convallis quam, a feugiat elit dui vel erat. 
+            <Modal.Title>COVID-19 Infection Rate</Modal.Title>
+            Thie percentage of the population that have had COVID-19.
             <br/><br/>
-            Nulla facilisi. Etiam porta nulla eget nisl eleifend, quis placerat ipsum porttitor. Cras semper dignissim nulla, vel lobortis massa varius vel. Morbi non libero augue. In suscipit justo nec blandit pulvinar. Curabitur ultricies, dolor eu rutrum hendrerit, ipsum ipsum ultrices dolor, in aliquet ligula lectus pretium turpis. Integer lacinia posuere sagittis. 
+            <Modal.Title>GDP Per Capita</Modal.Title>
+            This is simply the Gross Domestic Product (a measure of economic wealth) of a country divided by its population.
             <br/><br/>
-            Curabitur sollicitudin ornare turpis, sed imperdiet odio mattis ut.
+            <Modal.Title>Life Expectancy</Modal.Title>
+            This is simply the average age of an adult in any given country.
+            <br/><br/>
+            <Modal.Title>Vaccination Rate</Modal.Title>
+            The percentage of the population that has recieved at least one dose of a COVID-19 vaccine.
+            <br/><hr/>
+            All data is taken from “Our World in Data” and is continuously updated on a daily basis.
+            <br/><br/>
+            Our color scale helps visualize how a country is faring in each of these  indices by coloring it more red if the vaccination rate/infection rate/life expectancy/GDP Per Capita is on the lower end and more white if the vaccination rate/infection rate/life expectancy/GDP Per Capita is on the higher end. 
+            <br/><br/>
+            We hope that this visualization can bring to attention the areas of the world that need the most help when it comes to ensuring a healthy and vaccinated population.
           </Modal.Body>
           <Modal.Footer><Button variant="danger" onClick={() => {this.setState({isShown: false});}}>Close</Button></Modal.Footer>
         </Modal>

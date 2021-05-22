@@ -15,7 +15,7 @@ var countryHoverColor = am4core.color("#333333");
 var activeCountryColor = am4core.color("#0f0f0f");
 var backgroundColor = am4core.color("#ffffff");
 
-const data_fields = ["cases", "gdp", "mortality"];
+const data_fields = ["cases", "gdp", "mortality", "vaccinations"];
 
 const time_convert = {0:"2020-03-20", 10:"2020-04-01", 20:"2020-05-01", 30:"2020-06-01", 40:"2020-07-01", 50:"2020-08-01", 60:"2020-09-01", 70:"2020-10-01", 
                       80:"2020-11-01", 90:"2020-12-01", 100:"2021-01-01", 110:"2021-02-01", 120:"2021-03-01", 130:"2021-04-01", 140:"2021-05-01", 146:"2021-05-21"};
@@ -101,6 +101,7 @@ function displayMap(props) {
           // Build dictionary and push to list     
           ldata.push({"id"    : countries.alpha3ToAlpha2(d.iso_code),
                       "cases" : d.total_cases_per_million,
+                      "vaccinations" : d.people_vaccinated,
                       "mortality" : d.life_expectancy,
                       "gdp" : d.gdp_per_capita});
         }

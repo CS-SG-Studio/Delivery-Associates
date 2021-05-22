@@ -22,7 +22,7 @@ class NavBar extends React.Component{
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link onClick={() => {this.props.showModal();}}>About the Index</Nav.Link>
+              <Nav.Link onClick={() => {this.props.showModal();}}>About the Data</Nav.Link>
               <NavDropdown title="More Info" id="basic-nav-dropdown">
                 <NavDropdown.Item><a href="https://vaccinefinder.org/search/" className="link">
                   Find Vaccine Appointment</a></NavDropdown.Item>
@@ -35,7 +35,7 @@ class NavBar extends React.Component{
             </Nav>
             <Form inline>
               <FormControl type="text" placeholder="Search Country" 
-                           className="mr-sm-2" value={this.state.val} 
+                           className="mr-sm-2" value={this.state.val}
                            onChange={e => this.setState({ val: e.target.value })}/>
               <Button variant="danger" onClick={() => {this.props.searchCountry(this.state.val);}}>Search</Button>
             </Form>

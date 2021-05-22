@@ -8,11 +8,12 @@ import Nav from 'react-bootstrap/Nav';
 class Footer extends React.Component{
   constructor() {
     super();
-    this.state = {s1: "danger", s2: "secondary", s3: "secondary"}
+    this.state = {s1: "danger", s2: "secondary", s3: "secondary", s4: "secondary"}
   }
 
   changeColor(num) {
-    this.setState({s1: (num === 0) ? "danger" : "secondary", s2: (num === 1) ? "danger" : "secondary", s3: (num === 2) ? "danger" : "secondary"})
+    this.setState({s1: (num === 0) ? "danger" : "secondary", s2: (num === 1) ? "danger" : "secondary", 
+                   s3: (num === 2) ? "danger" : "secondary" , s4: (num === 3) ? "danger" : "secondary"})
   }
 
   render() {
@@ -27,6 +28,7 @@ class Footer extends React.Component{
             <Button variant={this.state.s1} onClick={() => {this.props.parentCallback(0); this.changeColor(0);}}>Cases per Million</Button>
             <Button variant={this.state.s2} onClick={() => {this.props.parentCallback(1); this.changeColor(1);}}>GDP per Capita</Button>
             <Button variant={this.state.s3} onClick={() => {this.props.parentCallback(2); this.changeColor(2);}}>Life Expectancy</Button>
+            <Button variant={this.state.s3} onClick={() => {this.props.parentCallback(3); this.changeColor(3);}}>Vaccination Rate</Button>
         </ButtonGroup>
       </Navbar>
     );
