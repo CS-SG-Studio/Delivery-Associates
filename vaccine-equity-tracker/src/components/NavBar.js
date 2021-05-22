@@ -24,13 +24,13 @@ class NavBar extends React.Component{
             <Nav className="mr-auto">
               <Nav.Link onClick={() => {this.props.showModal();}}>About the Data</Nav.Link>
               <NavDropdown title="More Info" id="basic-nav-dropdown">
-                <NavDropdown.Item><a href="https://vaccinefinder.org/search/" className="link">
-                  Find Vaccine Appointment</a></NavDropdown.Item>
+                <NavDropdown.Item href="https://vaccinefinder.org/search/" className="link">
+                  Find Vaccine Appointment</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item><a href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" className="link">
-                  COVID-19 Information</a></NavDropdown.Item>
-                <NavDropdown.Item><a href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html" className="link">
-                  Vaccine Information</a></NavDropdown.Item>
+                <NavDropdown.Item href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" className="link">
+                  COVID-19 Information</NavDropdown.Item>
+                <NavDropdown.Item href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html" className="link">
+                  Vaccine Information</NavDropdown.Item>
               </NavDropdown>
             </Nav>
             <Form inline>

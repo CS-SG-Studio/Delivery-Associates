@@ -21,7 +21,7 @@ class Footer extends React.Component{
       <Navbar bg="dark" variant="dark">
         <Nav className="mr-auto">
           <Navbar.Brand href="#home">
-            CS52
+            CS + Social Good Studio
           </Navbar.Brand>
         </Nav>
         <ButtonGroup aria-label="Basic example" className="mr-sm-2">

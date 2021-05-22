@@ -59,7 +59,7 @@ class App extends React.Component {
             <Modal.Title>Vaccination Rate</Modal.Title>
             The percentage of the population that has recieved at least one dose of a COVID-19 vaccine.
             <br/><hr/>
-            All data is taken from “Our World in Data” and is continuously updated on a daily basis.
+            All data is taken from <a href="https://ourworldindata.org/">“Our World in Data”</a> and is continuously updated on a daily basis.
             <br/><br/>
             Our color scale helps visualize how a country is faring in each of these  indices by coloring it more red if the vaccination rate/infection rate/life expectancy/GDP Per Capita is on the lower end and more white if the vaccination rate/infection rate/life expectancy/GDP Per Capita is on the higher end. 
             <br/><br/>

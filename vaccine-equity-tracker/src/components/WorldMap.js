@@ -17,6 +17,7 @@ var backgroundColor = am4core.color("#ffffff");
 
 const data_fields = ["cases", "gdp", "mortality", "vaccinations"];
 
+// Currently, this will need to be manually updated
 const time_convert = {0:"2020-03-20", 10:"2020-04-01", 20:"2020-05-01", 30:"2020-06-01", 40:"2020-07-01", 50:"2020-08-01", 60:"2020-09-01", 70:"2020-10-01", 
                       80:"2020-11-01", 90:"2020-12-01", 100:"2021-01-01", 110:"2021-02-01", 120:"2021-03-01", 130:"2021-04-01", 140:"2021-05-01", 146:"2021-05-21"};
 
@@ -119,7 +120,7 @@ function displayMap(props) {
   // Settings for info popup when hover over a country
   polygonTemplate.tooltipPosition = "fixed";
   // String that is displayed
-  polygonTemplate.tooltipText = "[font-size:24px bold]{name}[font-size:5px]\n\n[font-size:20px bold]{cases}[/] [font-size:14px] Cases per Million[font-size:6px]\n\n[font-size:20px bold]{gdp}[/] [font-size:14px] GDP per Capita[font-size:6px]\n\n[font-size:20px bold]{mortality}[/] [font-size:14px] Year Life Expectancy";
+  polygonTemplate.tooltipText = "[font-size:24px bold]{name}[font-size:5px]\n\n[font-size:20px bold]{cases}[/] [font-size:14px] Cases per Million[font-size:6px]\n\n[font-size:20px bold]{gdp}[/] [font-size:14px] GDP per Capita[font-size:6px]\n\n[font-size:20px bold]{mortality}[/] [font-size:14px] Year Life Expectancy[font-size:6px]\n\n[font-size:20px bold]{vaccinations}[/] [font-size:14px] Vaccinations Given";
 
   // Determines country color range
   polygonSeries.heatRules.push({
