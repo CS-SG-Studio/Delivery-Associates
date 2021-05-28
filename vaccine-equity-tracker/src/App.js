@@ -9,11 +9,15 @@ import MySlider from './components/MySlider'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
+
+var today = new Date();
+var num_months = (today.getFullYear() - 2020) * 12 + (today.getMonth() - 2);
+
 class App extends React.Component { 
 
   constructor(props){
     super(props);
-    this.state = {data: 0, isShown: false, country: "-", sliderVal: 146}
+    this.state = {data: 0, isShown: false, country: "-", sliderVal: num_months * 10 + Math.floor(today.getDate() / 3.1)}
 
     this.showModal = this.showModal.bind(this);
     this.searchCountry = this.searchCountry.bind(this);

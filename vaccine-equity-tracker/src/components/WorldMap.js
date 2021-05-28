@@ -17,12 +17,23 @@ var backgroundColor = am4core.color("#ffffff");
 
 const data_fields = ["cases", "gdp", "mortality", "vaccinations"];
 
-// Currently, this will need to be manually updated
-const time_convert = {0:"2020-03-20", 10:"2020-04-01", 20:"2020-05-01", 30:"2020-06-01", 40:"2020-07-01", 50:"2020-08-01", 60:"2020-09-01", 70:"2020-10-01", 
-                      80:"2020-11-01", 90:"2020-12-01", 100:"2021-01-01", 110:"2021-02-01", 120:"2021-03-01", 130:"2021-04-01", 140:"2021-05-01", 146:"2021-05-21"};
+// Allows data for slider to be automatically updated as months pass
+var today = new Date();
+var d = {};
+d[0] = '2020-03-20';
+var num_months = (today.getFullYear() - 2020) * 12 + (today.getMonth() - 2);
+for (var i = 0; i < num_months; i++) {
+  var month = (((i + 3) % 12) + 1)
+  d[(i + 1) * 10] = "202" + Math.floor((i + 3) / 12) + "-" + (month <= 9 ? "0" : "") + month + "-01";
+}
+
+// Selects Two Days Ago as current data (in case current day's data is late or missing)
+var dt = new Date();
+dt.setDate(dt.getDate() - 2);
+d[num_months * 10 + Math.floor(today.getDate() / 3.1)] = dt.toISOString().substring(0, 10);
+const time_convert = d;
 
 // Display Map is the function that is called when the map is created
-// You can see this function call down below in componentDidMount() and componentDidUpdate()
 function displayMap(props) {
   function resetHover() {
     polygonSeries.mapPolygons.each(function(polygon) {
@@ -52,7 +63,7 @@ function displayMap(props) {
   chart.projection = new am4maps.projections.Miller();
   chart.zoomEasing = am4core.ease.sinOut;
   chart.panBehavior = "move";
-  chart.homeGeoPoint = { longitude: 0, latitude: -2 };
+  chart.homeGeoPoint = { longitude: 0, latitude: 18 };
   chart.zoomControl.minusButton.events.on("hit", showWorld);
   chart.seriesContainer.background.events.on("hit", showWorld);
   chart.seriesContainer.background.events.on("over", resetHover);
@@ -99,7 +110,6 @@ function displayMap(props) {
         var d = data[i];
         // Get data from  date, make sure iso_code is 3 chars (non 3 char iso_codes are usually for continents)
         if (d.date === time_convert[props.sliderVal] && d.iso_code.length === 3) { 
-          // Build dictionary and push to list     
           ldata.push({"id"    : countries.alpha3ToAlpha2(d.iso_code),
                       "cases" : d.total_cases_per_million,
                       "vaccinations" : d.people_vaccinated,
@@ -107,7 +117,6 @@ function displayMap(props) {
                       "gdp" : d.gdp_per_capita});
         }
       }
-      // Updates map data
       polygonSeries.data = ldata;
     });
     ev.target.data = [];

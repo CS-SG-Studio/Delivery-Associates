@@ -14,25 +14,16 @@ const muiTheme = createMuiTheme({
     }
 }
 });
-  
-let marks = [
-    {value: 0, label: 'Mar 2020',},
-    {value: 10, label: 'Apr 2020',},
-    {value: 20, label: 'May 2020',},
-    {value: 30, label: 'Jun 2020',},
-    {value: 40, label: 'Jul 2020',},
-    {value: 50, label: 'Aug 2020',},
-    {value: 60, label: 'Sep 2020',},
-    {value: 70, label: 'Oct 2020',},
-    {value: 80, label: 'Nov 2020',},
-    {value: 90, label: 'Dec 2020',},
-    {value: 100, label: 'Jan 2021',},
-    {value: 110, label: 'Feb 2021',},
-    {value: 120, label: 'Mar 2021',},
-    {value: 130, label: 'Apr 2021',},
-    {value: 140, label: 'May 2021',},
-    {value: 146, label: 'Current',},  // Figure out how to get current date (Should display this)
-  ];
+ 
+// Automatically updates slider based on current date
+var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var today = new Date();
+var d = [{value: 0, label: 'Mar 2020'}]
+var num_months = (today.getFullYear() - 2020) * 12 + (today.getMonth() - 2);
+for (var i = 0; i < num_months; i++) {
+  d.push({"value": (i + 1) * 10, "label": months[((i + 3) % 12)] + " 202" + Math.floor((i + 3) / 12)});
+}
+d.push({"value": num_months * 10 + Math.floor(today.getDate() / 3.1), "label": "Current"});
   
 function valueLabelFormat(value) {
     return "";
@@ -51,17 +42,17 @@ class MySlider extends React.Component{
        <div style={{width: "90%"}}>
        <ThemeProvider theme={muiTheme}>
       <Slider
-        defaultValue={146}
+        defaultValue={num_months * 10 + Math.floor(today.getDate() / 3.1)}
         valueLabelFormat={valueLabelFormat}
         aria-labelledby="discrete-slider-restrict"
         valueLabelDisplay="auto"
         aria-label="pretto slider"
         justify = "center"
-        onChangeCommitted = { (e, val) => {this.setState({ value : val }); this.props.sendSliderVal(this.state.value);}} 
-        marks={marks}
+        onChangeCommitted = { (e, val) => {this.setState({ value : val }); this.props.sendSliderVal(this.state.value); console.log(num_months * 10 + Math.floor(today.getDate() / 3.1));}} 
+        marks={d}
         step={null}
         min={0}
-        max={146}
+        max={num_months * 10 + Math.floor(today.getDate() / 3.1)}
       />
       </ThemeProvider>
       </div>

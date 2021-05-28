@@ -23,7 +23,7 @@ class NavBar extends React.Component{
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link onClick={() => {this.props.showModal();}}>About the Data</Nav.Link>
-              <NavDropdown title="More Info" id="basic-nav-dropdown">
+              {/* <NavDropdown title="More Info" id="basic-nav-dropdown">
                 <NavDropdown.Item href="https://vaccinefinder.org/search/" className="link">
                   Find Vaccine Appointment</NavDropdown.Item>
                 <NavDropdown.Divider />
@@ -31,7 +31,7 @@ class NavBar extends React.Component{
                   COVID-19 Information</NavDropdown.Item>
                 <NavDropdown.Item href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/index.html" className="link">
                   Vaccine Information</NavDropdown.Item>
-              </NavDropdown>
+              </NavDropdown> */}
             </Nav>
             <Form inline>
               <FormControl type="text" placeholder="Search Country" 
