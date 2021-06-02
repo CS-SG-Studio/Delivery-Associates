@@ -17,7 +17,7 @@ class App extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = {data: 0, isShown: false, country: "-", sliderVal: num_months * 10 + Math.floor(today.getDate() / 3.1)}
+    this.state = {data: 3, isShown: true, country: "-", sliderVal: num_months * 10 + Math.floor(today.getDate() / 6.2) + 5}
 
     this.showModal = this.showModal.bind(this);
     this.searchCountry = this.searchCountry.bind(this);
@@ -49,8 +49,10 @@ class App extends React.Component {
         <NavBar showModal={this.showModal} searchCountry={this.searchCountry}/>
         <MySlider sendSliderVal={this.sendSliderVal}/>
         <Modal show={this.state.isShown} onHide={() => {this.setState({isShown: false});}} size="lg" centered>
-          <Modal.Header closeButton><Modal.Title>About the Data</Modal.Title></Modal.Header>
+          <Modal.Header closeButton><Modal.Title>About the Site</Modal.Title></Modal.Header>
           <Modal.Body>
+            In this dashboard, we hope to bring attention to the inequitable nature of the COVID-19 vaccine distribution. The color of each country signifies its current situation - the darker the red, the poorer a country is fairing in terms of their vaccination rate, GDP per Capita, life expectancy, and COVID-19 cases per million. By switching between these four measurements, users can get a sense of how these factors influence each other. We hope everyone who uses this dashboard, from government officials to citizens of the world, can walk away with a better understanding of the inequities that are currently surrounding the vaccine.
+            <br/><hr/>
             <Modal.Title>COVID-19 Infection Rate</Modal.Title>
             Thie percentage of the population that have had COVID-19.
             <br/><br/>

@@ -15,7 +15,7 @@ const title = 'COVID Vaccine Equity Tracker';
 class Footer extends React.Component{
   constructor() {
     super();
-    this.state = {s1: "danger", s2: "secondary", s3: "secondary", s4: "secondary"}
+    this.state = {s1: "secondary", s2: "secondary", s3: "secondary", s4: "danger"}
   }
 
   changeColor(num) {
@@ -32,17 +32,17 @@ class Footer extends React.Component{
           </Navbar.Brand>
         </Nav>
         <div className="mr-auto">
-        <FacebookShareButton url={shareUrl} quote={title}><FacebookIcon size={32} round/></FacebookShareButton>
+        {/* <FacebookShareButton url={shareUrl} quote={title}><FacebookIcon size={32} round/></FacebookShareButton>
         <TwitterShareButton url={shareUrl} title={title}> <TwitterIcon size={32} round/></TwitterShareButton>
         <LinkedinShareButton url={shareUrl}><LinkedinIcon size={32} round/></LinkedinShareButton>
         <RedditShareButton url={shareUrl} title={title} windowWidth={660} windowHeight={460}><RedditIcon size={32} round/></RedditShareButton>
-        <EmailShareButton url={shareUrl} subject={title} body=""><EmailIcon size={32} round/></EmailShareButton>
+        <EmailShareButton url={shareUrl} subject={title} body=""><EmailIcon size={32} round/></EmailShareButton> */}
         </div>
         <ButtonGroup aria-label="Basic example" className="mr-sm-2">
+            <Button variant={this.state.s4} onClick={() => {this.props.parentCallback(3); this.changeColor(3);}}>Percent Vaccinated</Button>
             <Button variant={this.state.s1} onClick={() => {this.props.parentCallback(0); this.changeColor(0);}}>Cases per Million</Button>
             <Button variant={this.state.s2} onClick={() => {this.props.parentCallback(1); this.changeColor(1);}}>GDP per Capita</Button>
             <Button variant={this.state.s3} onClick={() => {this.props.parentCallback(2); this.changeColor(2);}}>Life Expectancy</Button>
-            <Button variant={this.state.s4} onClick={() => {this.props.parentCallback(3); this.changeColor(3);}}>Vaccination Rate</Button>
         </ButtonGroup>
       </Navbar>
     );

@@ -8,7 +8,7 @@ import { ThemeProvider } from '@material-ui/styles';
 const muiTheme = createMuiTheme({
   overrides:{
     MuiSlider: {
-      thumb:{color: "red",},
+      thumb: {color: "red",},
       track: {color: 'red'},
       rail: {color: 'black'}
     }
@@ -23,8 +23,9 @@ var num_months = (today.getFullYear() - 2020) * 12 + (today.getMonth() - 2);
 for (var i = 0; i < num_months; i++) {
   d.push({"value": (i + 1) * 10, "label": months[((i + 3) % 12)] + " 202" + Math.floor((i + 3) / 12)});
 }
-d.push({"value": num_months * 10 + Math.floor(today.getDate() / 3.1), "label": "Current"});
+d.push({"value": num_months * 10 + Math.floor(today.getDate() / 6.2) + 5, "label": "Now"});
   
+
 function valueLabelFormat(value) {
     return "";
 }
@@ -42,17 +43,17 @@ class MySlider extends React.Component{
        <div style={{width: "90%"}}>
        <ThemeProvider theme={muiTheme}>
       <Slider
-        defaultValue={num_months * 10 + Math.floor(today.getDate() / 3.1)}
+        defaultValue={num_months * 10 + Math.floor(today.getDate() / 6.2) + 5}
         valueLabelFormat={valueLabelFormat}
         aria-labelledby="discrete-slider-restrict"
         valueLabelDisplay="auto"
         aria-label="pretto slider"
         justify = "center"
-        onChangeCommitted = { (e, val) => {this.setState({ value : val }); this.props.sendSliderVal(this.state.value); console.log(num_months * 10 + Math.floor(today.getDate() / 3.1));}} 
+        onChangeCommitted = { (e, val) => {this.setState({ value : val }); this.props.sendSliderVal(this.state.value);}} 
         marks={d}
         step={null}
         min={0}
-        max={num_months * 10 + Math.floor(today.getDate() / 3.1)}
+        max={num_months * 10 + Math.floor(today.getDate() / 6.2) + 5}
       />
       </ThemeProvider>
       </div>

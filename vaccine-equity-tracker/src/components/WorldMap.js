@@ -30,8 +30,12 @@ for (var i = 0; i < num_months; i++) {
 // Selects Two Days Ago as current data (in case current day's data is late or missing)
 var dt = new Date();
 dt.setDate(dt.getDate() - 2);
-d[num_months * 10 + Math.floor(today.getDate() / 3.1)] = dt.toISOString().substring(0, 10);
+d[num_months * 10 + Math.floor(today.getDate() / 6.2) + 5] = dt.toISOString().substring(0, 10);
 const time_convert = d;
+
+// Selects date a month ago
+var dtm = new Date();
+dtm.setDate(dtm.getDate() - 20);
 
 // Display Map is the function that is called when the map is created
 function displayMap(props) {
@@ -101,21 +105,28 @@ function displayMap(props) {
   chart.dataSource.parser.options.useColumnNames = true;
   chart.dataSource.reloadFrequency = 3600000; // 1 hour in milliseconds (Determines how frequently page will update data)
   chart.dataSource.url = "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv";
-  // When new data is parsed, this code is run
   chart.dataSource.events.on("parseended", function(ev) {
-    ev.target.component.series.each(function(polygonSeries) { // polygonSeries holds the data for each country
+    ev.target.component.series.each(function(polygonSeries) {
       var data = ev.target.data;
       var ldata = [];
-      for (var i = 0; i < data.length; i++) { 
+      var ddata = {};
+      for (var i = data.length - 1; i >= 0; i--) { 
         var d = data[i];
-        // Get data from  date, make sure iso_code is 3 chars (non 3 char iso_codes are usually for continents)
-        if (d.date === time_convert[props.sliderVal] && d.iso_code.length === 3) { 
-          ldata.push({"id"    : countries.alpha3ToAlpha2(d.iso_code),
-                      "cases" : d.total_cases_per_million,
-                      "vaccinations" : d.people_vaccinated,
-                      "mortality" : d.life_expectancy,
-                      "gdp" : d.gdp_per_capita});
+        var reachBack = time_convert[props.sliderVal] === dt.toISOString().substring(0, 10) && d.date > dtm.toISOString().substring(0, 10);
+        if (d.iso_code.length === 3 && (d.date === time_convert[props.sliderVal] || reachBack)) {    
+          if (!(countries.alpha3ToAlpha2(d.iso_code) in ddata)) {
+            ddata[countries.alpha3ToAlpha2(d.iso_code)] = {"id"           : countries.alpha3ToAlpha2(d.iso_code),
+                                                           "cases"        : d.total_cases_per_million,
+                                                           "vaccinations" : parseInt(d.people_vaccinated)/parseInt(d.population) * 100,
+                                                           "mortality"    : d.life_expectancy,
+                                                           "gdp"          : d.gdp_per_capita};
+          } else if (!ddata[countries.alpha3ToAlpha2(d.iso_code)]["vaccinations"] && typeof(d.people_vaccinated) != "undefined" && reachBack) {
+              ddata[countries.alpha3ToAlpha2(d.iso_code)]["vaccinations"] = parseInt(d.people_vaccinated)/parseInt(d.population) * 100;
+          }
         }
+      }
+      for (var key in ddata) {
+        ldata.push(ddata[key]);
       }
       polygonSeries.data = ldata;
     });
@@ -129,7 +140,7 @@ function displayMap(props) {
   // Settings for info popup when hover over a country
   polygonTemplate.tooltipPosition = "fixed";
   // String that is displayed
-  polygonTemplate.tooltipText = "[font-size:24px bold]{name}[font-size:5px]\n\n[font-size:20px bold]{cases}[/] [font-size:14px] Cases per Million[font-size:6px]\n\n[font-size:20px bold]{gdp}[/] [font-size:14px] GDP per Capita[font-size:6px]\n\n[font-size:20px bold]{mortality}[/] [font-size:14px] Year Life Expectancy[font-size:6px]\n\n[font-size:20px bold]{vaccinations}[/] [font-size:14px] Vaccinations Given";
+  polygonTemplate.tooltipText = "[font-size:24px bold]{name}[font-size:6px]\n\n[font-size:20px bold]{vaccinations}%[/] [font-size:14px] of Population Vaccinated[font-size:5px]\n\n[font-size:20px bold]{cases}[/] [font-size:14px] Cases per Million[font-size:6px]\n\n[font-size:20px bold]{gdp}[/] [font-size:14px] GDP per Capita[font-size:6px]\n\n[font-size:20px bold]{mortality}[/] [font-size:14px] Year Life Expectancy";
 
   // Determines country color range
   polygonSeries.heatRules.push({
@@ -162,7 +173,7 @@ function displayMap(props) {
   return {chart, polygonSeries};
 }
 
-var data_value = 0;
+var data_value = 3;
 
 const giveValue = () => {
   return data_value;
