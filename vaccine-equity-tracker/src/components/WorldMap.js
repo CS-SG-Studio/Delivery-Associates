@@ -287,7 +287,7 @@ class WorldMap extends Component {
       let vals = displayMap(this.props);
       this.chart = vals.chart;
       this.polygonSeries = vals.polygonSeries;
-    } else {
+    } else if (this.props.buttonState !== prevProps.buttonState) {
       this.runSearch(this.props.searchResult);
     }
   }
