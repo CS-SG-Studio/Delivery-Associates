@@ -17,7 +17,7 @@ class App extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = {data: 3, data2: 1, isShown: true, country: "-", sliderVal: num_months * 10 + Math.floor(today.getDate() / 6.2) + 5}
+    this.state = {data: 3, data2: 1, isShown: true, country: "-", sliderVal: num_months * 10 + Math.floor(today.getDate() / 6.2) + 5, buttonState: 0}
 
     this.showModal = this.showModal.bind(this);
     this.searchCountry = this.searchCountry.bind(this);
@@ -35,7 +35,7 @@ class App extends React.Component {
   }
 
   searchCountry = (countrySelected) =>{
-    this.setState({country: countrySelected})
+    this.setState({country: countrySelected, buttonState: 1 - this.state.buttonState})
   }
 
   sendSliderVal = (val) =>{
@@ -77,7 +77,7 @@ class App extends React.Component {
           </Modal.Body>
           <Modal.Footer><Button variant="danger" onClick={() => {this.setState({isShown: false});}}>Close</Button></Modal.Footer>
         </Modal>
-        <WorldMap dataParentToChild = {data} vaccData = {this.state.data2} searchResult = {this.state.country} sliderVal = {this.state.sliderVal}/>
+        <WorldMap dataParentToChild = {data} vaccData = {this.state.data2} searchResult = {this.state.country} sliderVal = {this.state.sliderVal} buttonState = {this.state.buttonState}/>
         <Footer parentCallback = {this.handleCallback} parentVaccCallback = {this.handleVaccCallback}/>
       </div>
     );

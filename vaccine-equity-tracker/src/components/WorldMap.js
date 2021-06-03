@@ -7,6 +7,7 @@ import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 
 // Import necessary country data in English
 var countries = require("i18n-iso-countries");
+
 // We will need to do this for each individual language we want to support
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 
@@ -256,7 +257,7 @@ function displayMap(props) {
 class WorldMap extends Component {
   constructor(props) {
     super(props);
-    this.state = {data: this.props.dataParentToChild, data2: this.props.vaccData, country: this.props.searchResult, sliderVal: this.props.sliderVal}
+    this.state = {data: this.props.dataParentToChild, data2: this.props.vaccData, country: this.props.searchResult, sliderVal: this.props.sliderVal, buttonState: this.props.buttonState}
   }
 
   runSearch(loc) {
@@ -279,8 +280,7 @@ class WorldMap extends Component {
       let vals = displayMap(this.props);
       this.chart = vals.chart;
       this.polygonSeries = vals.polygonSeries;
-    } 
-    if (this.props.searchResult !== prevProps.searchResult) { //Instead of doing this, make sure that button was pressed
+    } else {
       this.runSearch(this.props.searchResult);
     }
   }
