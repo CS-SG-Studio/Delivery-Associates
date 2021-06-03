@@ -208,7 +208,7 @@ function displayMap(props) {
   imageTemplate.nonScaling = true;
   imageTemplate.strokeOpacity = 0.7;
   imageTemplate.fillOpacity = 0.7;
-  if (props.vaccData !== 1) {
+  if (props.vaccData === 1) {
     if (props.dataParentToChild === 0) {
       imageTemplate.tooltipText = "[bold]{value} Cases per Million[/]";
     } else if (props.dataParentToChild === 1) {

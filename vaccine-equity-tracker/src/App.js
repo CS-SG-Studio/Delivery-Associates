@@ -55,7 +55,7 @@ class App extends React.Component {
         <Modal show={this.state.isShown} onHide={() => {this.setState({isShown: false});}} size="lg" centered>
           <Modal.Header closeButton><Modal.Title>About the Site</Modal.Title></Modal.Header>
           <Modal.Body>
-            In this dashboard, we hope to bring attention to the inequitable nature of the COVID-19 vaccine distribution. The color of each country signifies its current situation - the darker the red, the poorer a country is fairing in terms of their vaccination rate, GDP per Capita, life expectancy, and COVID-19 cases per million. By switching between these four measurements, users can get a sense of how these factors influence each other. We hope everyone who uses this dashboard, from government officials to citizens of the world, can walk away with a better understanding of the inequities that are currently surrounding the vaccine.
+            In this dashboard, we hope to bring attention to the inequitable nature of the COVID-19 vaccine distribution. The color of each country signifies its current situation - the darker the red, the poorer a country is fairing in terms of vaccination rate, GDP per Capita, life expectancy, and COVID-19 cases per million. By switching between these four measurements, users can get a sense of how these factors influence each other. We hope everyone who uses this dashboard, from government officials to citizens of the world, can walk away with a better understanding of the inequities that are currently surrounding the vaccine.
             <br/><hr/>
             <Modal.Title>COVID-19 Infection Rate</Modal.Title>
             Thie percentage of the population that have had COVID-19.
