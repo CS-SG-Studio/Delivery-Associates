@@ -163,11 +163,18 @@ function displayMap(props) {
   polygonTemplate.tooltipText = "[font-size:24px bold]{name}[font-size:6px]\n\n[font-size:20px bold]{vaccinations}%[/] [font-size:14px] of Population Vaccinated[font-size:5px]\n\n[font-size:20px bold]{cases}[/] [font-size:14px] Cases per Million[font-size:6px]\n\n[font-size:20px bold]{gdp}[/] [font-size:14px] GDP per Capita[font-size:6px]\n\n[font-size:20px bold]{mortality}[/] [font-size:14px] Year Life Expectancy";
 
   // Determines country color range
+  var minC = am4core.color("#ff0000");
+  var maxC = am4core.color("#ffd5d5");
+  if (props.vaccData !== 1 && props.dataParentToChild === 0) {
+    var temp = minC;
+    minC = maxC;
+    maxC = temp;
+  }
   polygonSeries.heatRules.push({
     property: "fill",
     target: polygonSeries.mapPolygons.template,
-    min: am4core.color("#ff0000"), //#ff0000
-    max: am4core.color("#ffd5d5"), // aec6cf
+    min: minC, //#ff0000
+    max: maxC, // aec6cf
     logarithmic: true // Added this because it adjust to concentration around the max or min
   });
 

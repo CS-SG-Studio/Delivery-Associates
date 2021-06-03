@@ -17,7 +17,7 @@ class App extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = {data: 3, data2: 1, isShown: true, country: "-", sliderVal: num_months * 10 + Math.floor(today.getDate() / 6.2) + 5, buttonState: 0}
+    this.state = {data: 3, data2: 1, isShown: false, country: "-", sliderVal: num_months * 10 + Math.floor(today.getDate() / 6.2) + 5, buttonState: 0}
 
     this.showModal = this.showModal.bind(this);
     this.searchCountry = this.searchCountry.bind(this);
