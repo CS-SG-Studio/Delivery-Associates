@@ -17,16 +17,21 @@ class App extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = {data: 3, isShown: true, country: "-", sliderVal: num_months * 10 + Math.floor(today.getDate() / 6.2) + 5}
+    this.state = {data: 3, data2: 1, isShown: true, country: "-", sliderVal: num_months * 10 + Math.floor(today.getDate() / 6.2) + 5}
 
     this.showModal = this.showModal.bind(this);
     this.searchCountry = this.searchCountry.bind(this);
     this.sendSliderVal = this.sendSliderVal.bind(this);
     this.handleCallback = this.handleCallback.bind(this);
+    this.handleVaccCallback = this.handleVaccCallback.bind(this);
   }
 
   handleCallback = (childData) =>{
     this.setState({data: childData})
+  }
+
+  handleVaccCallback = (childData) =>{
+    this.setState({data2: 1 - this.state.data2})
   }
 
   searchCountry = (countrySelected) =>{
@@ -43,7 +48,6 @@ class App extends React.Component {
 
   render() {
     const data = this.state.data;
-
       return (
       <div className="App">
         <NavBar showModal={this.showModal} searchCountry={this.searchCountry}/>
@@ -73,8 +77,8 @@ class App extends React.Component {
           </Modal.Body>
           <Modal.Footer><Button variant="danger" onClick={() => {this.setState({isShown: false});}}>Close</Button></Modal.Footer>
         </Modal>
-        <WorldMap dataParentToChild = {data} searchResult = {this.state.country} sliderVal = {this.state.sliderVal}/>
-        <Footer parentCallback = {this.handleCallback}/>
+        <WorldMap dataParentToChild = {data} vaccData = {this.state.data2} searchResult = {this.state.country} sliderVal = {this.state.sliderVal}/>
+        <Footer parentCallback = {this.handleCallback} parentVaccCallback = {this.handleVaccCallback}/>
       </div>
     );
   }

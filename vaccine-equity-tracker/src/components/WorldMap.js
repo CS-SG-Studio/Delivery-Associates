@@ -15,7 +15,7 @@ var countryHoverColor = am4core.color("#333333");
 var activeCountryColor = am4core.color("#0f0f0f");
 var backgroundColor = am4core.color("#ffffff");
 
-const data_fields = ["cases", "gdp", "mortality", "vaccinations"];
+const data_fields = ["cases", "gdp", "mortality", "--"];
 
 // Allows data for slider to be automatically updated as months pass
 var today = new Date();
@@ -42,6 +42,10 @@ function displayMap(props) {
   function resetHover() {
     polygonSeries.mapPolygons.each(function(polygon) {
       polygon.isHover = false;
+    })
+
+    bubbleSeries.mapImages.each(function(image) {
+      image.isHover = false;
     })
   }
   function showWorld() {
@@ -95,43 +99,58 @@ function displayMap(props) {
   // Adds countries to map
   let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
   polygonSeries.exclude = ["AQ"];
-  polygonSeries.dataFields.value = data_fields[giveValue()]; // This is how we switch data types (corresponds to dict key)
+  if (props.vaccData === 1) {
+    polygonSeries.dataFields.value = "vaccinations";
+  } else {
+    polygonSeries.dataFields.value = data_fields[props.dataParentToChild]; // This is how we switch data types (corresponds to dict key)
+  }
   polygonSeries.useGeodata = true;
   polygonSeries.calculateVisualCenter = true;
-  //polygonSeries.mapPolygons.template.hoverOnFocus = true; 
+  polygonSeries.mapPolygons.template.hoverOnFocus = true; 
+
+  var bubbleSeries = chart.series.push(new am4maps.MapImageSeries());
+  if (props.vaccData === 1) {
+    bubbleSeries.dataFields.value = data_fields[props.dataParentToChild];
+  } else {
+    bubbleSeries.dataFields.value = "---";
+  }
+  bubbleSeries.dataFields.id = "id";
 
   // Pulls data from OWID github and sets it as map data
-  chart.dataSource.parser = new am4core.CSVParser();
-  chart.dataSource.parser.options.useColumnNames = true;
-  chart.dataSource.reloadFrequency = 3600000; // 1 hour in milliseconds (Determines how frequently page will update data)
-  chart.dataSource.url = "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv";
-  chart.dataSource.events.on("parseended", function(ev) {
-    ev.target.component.series.each(function(polygonSeries) {
-      var data = ev.target.data;
-      var ldata = [];
-      var ddata = {};
-      for (var i = data.length - 1; i >= 0; i--) { 
-        var d = data[i];
-        var reachBack = time_convert[props.sliderVal] === dt.toISOString().substring(0, 10) && d.date > dtm.toISOString().substring(0, 10);
-        if (d.iso_code.length === 3 && (d.date === time_convert[props.sliderVal] || reachBack)) {    
-          if (!(countries.alpha3ToAlpha2(d.iso_code) in ddata)) {
-            ddata[countries.alpha3ToAlpha2(d.iso_code)] = {"id"           : countries.alpha3ToAlpha2(d.iso_code),
-                                                           "cases"        : d.total_cases_per_million,
-                                                           "vaccinations" : parseInt(d.people_vaccinated)/parseInt(d.population) * 100,
-                                                           "mortality"    : d.life_expectancy,
-                                                           "gdp"          : d.gdp_per_capita};
-          } else if (!ddata[countries.alpha3ToAlpha2(d.iso_code)]["vaccinations"] && typeof(d.people_vaccinated) != "undefined" && reachBack) {
-              ddata[countries.alpha3ToAlpha2(d.iso_code)]["vaccinations"] = parseInt(d.people_vaccinated)/parseInt(d.population) * 100;
+  if (props.vaccData !== 0 || props.dataParentToChild !== 3) {
+    chart.dataSource.parser = new am4core.CSVParser();
+    chart.dataSource.parser.options.useColumnNames = true;
+    chart.dataSource.reloadFrequency = 3600000; // 1 hour in milliseconds (Determines how frequently page will update data)
+    chart.dataSource.url = "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv";
+    chart.dataSource.events.on("parseended", function(ev) {
+      ev.target.component.series.each(function(polygonSeries) {
+        var data = ev.target.data;
+        var ldata = [];
+        var ddata = {};
+        for (var i = data.length - 1; i >= 0; i--) { 
+          var d = data[i];
+          var reachBack = time_convert[props.sliderVal] === dt.toISOString().substring(0, 10) && d.date > dtm.toISOString().substring(0, 10);
+          if (d.iso_code.length === 3 && (d.date === time_convert[props.sliderVal] || reachBack)) {   
+            if (!(countries.alpha3ToAlpha2(d.iso_code) in ddata)) {
+              ddata[countries.alpha3ToAlpha2(d.iso_code)] = {"id"           : countries.alpha3ToAlpha2(d.iso_code),
+                                                            "cases"        : d.total_cases_per_million,
+                                                            "vaccinations" : parseInt(d.people_vaccinated)/parseInt(d.population) * 100,
+                                                            "mortality"    : d.life_expectancy,
+                                                            "gdp"          : d.gdp_per_capita};
+            } else if (props.vaccData === 1 && !ddata[countries.alpha3ToAlpha2(d.iso_code)]["vaccinations"] && typeof(d.people_vaccinated) != "undefined" && reachBack) {
+                ddata[countries.alpha3ToAlpha2(d.iso_code)]["vaccinations"] = parseInt(d.people_vaccinated)/parseInt(d.population) * 100;
+            }
           }
         }
-      }
-      for (var key in ddata) {
-        ldata.push(ddata[key]);
-      }
-      polygonSeries.data = ldata;
+        for (var key in ddata) {
+          ldata.push(ddata[key]);
+        }
+        polygonSeries.data = ldata;
+        bubbleSeries.data = ldata;
+      });
+      ev.target.data = [];
     });
-    ev.target.data = [];
-  });
+  }
 
   let polygonTemplate = polygonSeries.mapPolygons.template;
   polygonTemplate.stroke = backgroundColor; // Creates outlines for each country
@@ -170,24 +189,74 @@ function displayMap(props) {
   var polygonActiveState = polygonTemplate.states.create("active")
   polygonActiveState.properties.fill = activeCountryColor;
 
+  // adjust tooltip
+  bubbleSeries.tooltip.getStrokeFromObject = true;
+  bubbleSeries.tooltip.getFillFromObject = true;
+  bubbleSeries.tooltip.background.fillOpacity = 0.6;
+  bubbleSeries.mapImages.template.fill = am4core.color("#de0000");
+  bubbleSeries.mapImages.template.stroke = am4core.color("#ffffff");
+
+  var imageTemplate = bubbleSeries.mapImages.template;
+  imageTemplate.nonScaling = true;
+  imageTemplate.strokeOpacity = 0.7;
+  imageTemplate.fillOpacity = 0.7;
+  if (props.vaccData !== 1) {
+    if (props.dataParentToChild === 0) {
+      imageTemplate.tooltipText = "[bold]{value} Cases per Million[/]";
+    } else if (props.dataParentToChild === 1) {
+      imageTemplate.tooltipText = "[bold]{value} GDP per Capita[/]";
+    } else if (props.dataParentToChild === 2) {
+      imageTemplate.tooltipText = "[bold]{value} Year Life Expectancy[/]";
+    }
+  }
+  var imageHoverState = imageTemplate.states.create("hover");
+  imageHoverState.properties.fillOpacity = 1;
+  imageHoverState.properties.strokeOpacity = 1;
+
+  var circle = imageTemplate.createChild(am4core.Circle);
+  circle.applyOnClones = true;
+
+  bubbleSeries.heatRules.push({"target": circle, "property": "radius", "min": 3, "max": 30, "dataField": "value"})
+  bubbleSeries.events.on("dataitemsvalidated", function() {
+    bubbleSeries.dataItems.each((dataItem) => {
+      var mapImage = dataItem.mapImage;
+      var circle = mapImage.children.getIndex(0);
+      if (mapImage.dataItem.value === 0) {circle.hide(0);}
+      else if (circle.isHidden || circle.isHiding) {circle.show();}
+    })
+  })
+
+  imageTemplate.adapter.add("latitude", function(latitude, target) {
+    var polygon = polygonSeries.getPolygonById(target.dataItem.id);
+    if (polygon) {
+      target.disabled = false;
+      return polygon.visualLatitude;
+    }
+    else {
+      target.disabled = true;
+    }
+    return latitude;
+  });
+
+  imageTemplate.adapter.add("longitude", function(longitude, target) {
+    var polygon = polygonSeries.getPolygonById(target.dataItem.id);
+    if (polygon) {
+      target.disabled = false;
+      return polygon.visualLongitude;
+    }
+    else {
+      target.disabled = true;
+    }
+    return longitude;
+  });
+
   return {chart, polygonSeries};
-}
-
-var data_value = 3;
-
-const giveValue = () => {
-  return data_value;
-}
-
-const getvalue = (val) => {
-  data_value = val;
-  return val;
 }
 
 class WorldMap extends Component {
   constructor(props) {
     super(props);
-    this.state = {data: this.props.dataParentToChild, country: this.props.searchResult, sliderVal: this.props.sliderVal}
+    this.state = {data: this.props.dataParentToChild, data2: this.props.vaccData, country: this.props.searchResult, sliderVal: this.props.sliderVal}
   }
 
   runSearch(loc) {
@@ -203,13 +272,15 @@ class WorldMap extends Component {
     this.polygonSeries = vals.polygonSeries; 
   }
   componentDidUpdate(prevProps) { 
-    if (this.props.dataParentToChild !== prevProps.dataParentToChild || this.props.sliderVal !== prevProps.sliderVal) {
-      this.setState({data: getvalue(this.props.dataParentToChild), sliderVal: this.props.sliderVal});
+    if (this.props.dataParentToChild !== prevProps.dataParentToChild ||
+        this.props.vaccData !== prevProps.vaccData || 
+        this.props.sliderVal !== prevProps.sliderVal) {
+      this.setState({data: this.props.dataParentToChild, sliderVal: this.props.sliderVal, data2: this.props.vaccData});
       let vals = displayMap(this.props);
       this.chart = vals.chart;
       this.polygonSeries = vals.polygonSeries;
     } 
-    if (this.props.searchResult !== prevProps.searchResult) {
+    if (this.props.searchResult !== prevProps.searchResult) { //Instead of doing this, make sure that button was pressed
       this.runSearch(this.props.searchResult);
     }
   }
