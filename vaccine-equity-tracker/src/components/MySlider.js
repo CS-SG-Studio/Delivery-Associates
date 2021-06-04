@@ -1,5 +1,4 @@
 import React from 'react';
-import './NavBar.css';
 import Slider from '@material-ui/core/Slider';
 import Box from "@material-ui/core/Box";
 import { createMuiTheme } from '@material-ui/core/styles';

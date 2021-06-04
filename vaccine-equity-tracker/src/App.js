@@ -30,7 +30,7 @@ class App extends React.Component {
     this.setState({data: childData})
   }
 
-  handleVaccCallback = (childData) =>{
+  handleVaccCallback() {
     this.setState({data2: 1 - this.state.data2})
   }
 

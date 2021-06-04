@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './WorldMap.css';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import * as am4charts from "@amcharts/amcharts4/charts";
