@@ -31,6 +31,7 @@ npm start
 In order to run a React App for testing purposes, navigate to the `Delivery-Associates` repo and then run the following commands:
 ```
 cd vaccine-equity-tracker
+npm install
 npm start
 ```
 
