@@ -4,7 +4,7 @@ _**Faris Bdair, Julia Wang, Claire Yu, AJ Arnolie**_
 ## Project Overview
 Over the last year, the coronavirus has impacted the lives of billions of people around the world. But in the last few months, vaccine development for this virus has advanced rapidly with a number of approved vaccines and more in development. Many experts identify that success in this vaccination distribution and adoption process is critical in ending this pandemic and ensuring the health and safety of people across the world. To address issues with vaccine distribution, we will **develop a Global Vaccine Dashboard with COVID and demographic data highlighting (in)equity in testing and vaccine rollout.**
 
-<p align="center"><img width="900" alt="Screen Shot 2021-04-26 at 3 11 50 PM" src="https://user-images.githubusercontent.com/57520931/116137628-c6315780-a6a1-11eb-91c4-4ece8e148281.png">
+<p align="center"><img width="900" alt="Screen Shot 2021-06-04 at 10 16 38 AM" src="https://user-images.githubusercontent.com/57520931/120815609-fb8d5880-c51d-11eb-9af1-0352e91dfd03.png">
 </p>
 
 ## Setup Instructions
@@ -54,17 +54,36 @@ git merge <branch-name>                # Merges current branch with <branch-name
 ```
 
 ## Usage
-_TBD_
+### Data Selection
+Use the buttons at the bottom of the page to select which data should be displayed on the map.
+
+If the **Percent Vaccinated** button is selected, the values for this primary datatype will be displayed as shades of red for each country on the map. Then, the site provides the option to select a secondary data type. This data type defaults to **None**, but the user can also choose between **Cases per Million**, **GDP per Capita**, and **Life Expectancy**. When one of these secondary data types is selected, the data is displayed as bubbles of various sizes for each country. Larger bubbles correspond to higher values.
+
+If the **Percent Vaccinated** button is not selected, one of the secondary data types can be selected to be displayed as a primary data type, appearing as shades of red for each country on the map.
+
+### The Map
+The map displays the data that has been selected in the previous step. To see specific information for each country, simply hover over that country with your mouse.
+
+### Search Bar
+An additional way to find more information about a specific country is using the search bar. Simply type the name of a country in the bar and press **Submit**, and that country will be selected and zoomed in on.
+
+### Time Slider
+Finally, the user has the option to select the time frame for the data to be displayed. This slider defaults to **Now**, which displays data updated to within the past three weeks, but the user can select any month dating back to March 2020.
 
 ## Index Design
 ### Data
-- [Our World in Data Covid Vaccination Data](https://ourworldindata.org/covid-vaccinations)
-- [Country Adult Mortality Rate Data WHO](https://www.who.int/data/gho/data/indicators/indicator-details/GHO/adult-mortality-rate-(probability-of-dying-between-15-and-60-years-per-1000-population))
-- [Country Life Expectancy Data WHO](https://www.who.int/data/gho/data/indicators/indicator-details/GHO/life-expectancy-at-birth-(years))
-- [Country Medical Doctors per 10,000 People WHO](https://www.who.int/data/gho/data/indicators/indicator-details/GHO/medical-doctors-(per-10-000-population))
-- [WHO COVID Dashboard](https://covid19.who.int/table?tableDay=yesterday)
-- [UNICEF Country Data](https://unicef.shinyapps.io/wuenic-analytics-2020)
-- [Country Socioeconomic Status Indicator Data](https://www.visualcapitalist.com/ranked-the-social-mobility-of-82-countries/)
-- [Country GDP Data WorldoMeters](https://www.worldometers.info/gdp/gdp-by-country/)
+All data is taken from [Our World in Data](https://ourworldindata.org/) and is updated on a daily basis. Our World in Data provides a unified dataset with data pulled from reputable sources such as the [Johns Hopkins University COVID-19 Data Repository](https://github.com/CSSEGISandData/COVID-19) as well as official government reports. Further information about the dataset and its sources can be found on the [OWID Github](https://github.com/owid/covid-19-data/tree/master/public/data) or at the [OWID website](https://ourworldindata.org/coronavirus-source-data).
 
-_TBD_
+Along with vaccination data, we selected the following three data types for their strong correlation to **Percent Vaccinated** as well as for the amount of data available for these data types.
+
+### Percent Vaccinated
+The percentage of the population that has recieved at least one dose of a COVID-19 vaccine. This measure is calculated by taking the total number of adults in a given country that have recieved at least one vaccine dose and dividing that number by the population size.
+
+### COVID-19 Cases per Million
+The number of COVID-19 cases within a given country for every million people. This measure is scaled by population and thus gives us a way to compare the spread of COVID-19 within countries while adjusting for population.
+
+### GDP Per Capita
+Is equivalent to the Gross Domestic Product (a measure of a country’s economic output) of a country divided by its population. This measure is generally used to gauge the prosperity and standard of living in a given country.
+
+### Life Expectancy
+Refers to the number of years a person in a given country will live on average.
