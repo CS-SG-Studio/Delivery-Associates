@@ -6,14 +6,14 @@ import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 
 // Import necessary country data in English
 var countries = require("i18n-iso-countries");
-
-// We will need to do this for each individual language we want to support
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 
 // Defines colors that are used later in the file
 var countryHoverColor = am4core.color("#333333");
 var activeCountryColor = am4core.color("#0f0f0f");
 var backgroundColor = am4core.color("#ffffff");
+var maxColor = am4core.color("#ff0000");
+var minColor = am4core.color("#ffd5d5");
 
 const data_fields = ["cases", "gdp", "mortality", "--"];
 
@@ -33,24 +33,19 @@ dt.setDate(dt.getDate() - 2);
 d[num_months * 10 + Math.floor(today.getDate() / 6.2) + 5] = dt.toISOString().substring(0, 10);
 const time_convert = d;
 
-// Selects date a month ago
+// Selects date a month ago for data sampling range
 var dtm = new Date();
 dtm.setDate(dtm.getDate() - 20);
 
 // Display Map is the function that is called when the map is created
 function displayMap(props) {
   function resetHover() {
-    polygonSeries.mapPolygons.each(function(polygon) {
-      polygon.isHover = false;
-    })
-
-    bubbleSeries.mapImages.each(function(image) {
-      image.isHover = false;
-    })
+    polygonSeries.mapPolygons.each(function (polygon) { polygon.isHover = false; })
+    bubbleSeries.mapImages.each(function (image) { image.isHover = false; })
   }
   function showWorld() {
     resetHover();
-    polygonSeries.mapPolygons.each(function(polygon) {
+    polygonSeries.mapPolygons.each(function (polygon) {
       polygon.isActive = false;
     })
     chart.goHome();
@@ -84,7 +79,7 @@ function displayMap(props) {
   button.marginRight = 5;
   button.icon = new am4core.Sprite();
   button.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
-  button.events.on("hit", function() {chart.goHome();});
+  button.events.on("hit", function () { chart.goHome(); });
 
   // Sets background color
   chart.background.fill = backgroundColor;
@@ -95,7 +90,7 @@ function displayMap(props) {
   chart.background.fillOpacity = 1;
   chart.backgroundSeries.mapPolygons.template.polygon.fillOpacity = 1;
   chart.seriesContainer.background.fillOpacity = 1;
-  
+
   // Adds countries to map
   let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
   polygonSeries.exclude = ["AQ"];
@@ -106,7 +101,7 @@ function displayMap(props) {
   }
   polygonSeries.useGeodata = true;
   polygonSeries.calculateVisualCenter = true;
-  polygonSeries.mapPolygons.template.hoverOnFocus = true; 
+  polygonSeries.mapPolygons.template.hoverOnFocus = true;
 
   var bubbleSeries = chart.series.push(new am4maps.MapImageSeries());
   if (props.vaccData === 1) {
@@ -122,29 +117,33 @@ function displayMap(props) {
     chart.dataSource.parser.options.useColumnNames = true;
     chart.dataSource.reloadFrequency = 3600000; // 1 hour in milliseconds (Determines how frequently page will update data)
     chart.dataSource.url = "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv";
-    chart.dataSource.events.on("parseended", function(ev) {
-      ev.target.component.series.each(function(polygonSeries) {
+    chart.dataSource.events.on("parseended", function (ev) {
+      ev.target.component.series.each(function (polygonSeries) {
         var data = ev.target.data;
         var ldata = [];
         var ddata = {};
-        for (var i = data.length - 1; i >= 0; i--) { 
+        for (var i = data.length - 1; i >= 0; i--) {
           var d = data[i];
+          // If the "Now" slider value is selected, data is considered for the past 20 days
           var reachBack = time_convert[props.sliderVal] === dt.toISOString().substring(0, 10) && d.date > dtm.toISOString().substring(0, 10);
-          if (d.iso_code.length === 3 && (d.date === time_convert[props.sliderVal] || reachBack)) {   
+          if (d.iso_code.length === 3 && (d.date === time_convert[props.sliderVal] || reachBack)) {
             if (!(countries.alpha3ToAlpha2(d.iso_code) in ddata)) {
-              ddata[countries.alpha3ToAlpha2(d.iso_code)] = {"id"           : countries.alpha3ToAlpha2(d.iso_code),
-                                                            "cases"        : d.total_cases_per_million,
-                                                            "vaccinations" : parseInt(d.people_vaccinated)/parseInt(d.population) * 100,
-                                                            "mortality"    : d.life_expectancy,
-                                                            "gdp"          : d.gdp_per_capita};
-            } else if (props.vaccData === 1 && !ddata[countries.alpha3ToAlpha2(d.iso_code)]["vaccinations"] && typeof(d.people_vaccinated) != "undefined" && reachBack) {
-                ddata[countries.alpha3ToAlpha2(d.iso_code)]["vaccinations"] = parseInt(d.people_vaccinated)/parseInt(d.population) * 100;
+              ddata[countries.alpha3ToAlpha2(d.iso_code)] = {
+                "id": countries.alpha3ToAlpha2(d.iso_code),
+                "cases": d.total_cases_per_million,
+                "vaccinations": parseInt(d.people_vaccinated) / parseInt(d.population) * 100,
+                "mortality": d.life_expectancy,
+                "gdp": d.gdp_per_capita
+              };
+            } else if (props.vaccData === 1 && !ddata[countries.alpha3ToAlpha2(d.iso_code)]["vaccinations"] && typeof (d.people_vaccinated) != "undefined" && reachBack) {
+              ddata[countries.alpha3ToAlpha2(d.iso_code)]["vaccinations"] = parseInt(d.people_vaccinated) / parseInt(d.population) * 100;
             }
           }
         }
         for (var key in ddata) {
           ldata.push(ddata[key]);
         }
+        // Giving data to relevant objects for mapping
         polygonSeries.data = ldata;
         bubbleSeries.data = ldata;
       });
@@ -153,28 +152,19 @@ function displayMap(props) {
   }
 
   let polygonTemplate = polygonSeries.mapPolygons.template;
-  polygonTemplate.stroke = backgroundColor; // Creates outlines for each country
+  polygonTemplate.stroke = backgroundColor;
   polygonTemplate.strokeOpacity = 0.15;
 
   // Settings for info popup when hover over a country
   polygonTemplate.tooltipPosition = "fixed";
-  // String that is displayed
   polygonTemplate.tooltipText = "[font-size:24px bold]{name}[font-size:6px]\n\n[font-size:20px bold]{vaccinations}%[/] [font-size:14px] of Population Vaccinated[font-size:5px]\n\n[font-size:20px bold]{cases}[/] [font-size:14px] Cases per Million[font-size:6px]\n\n[font-size:20px bold]{gdp}[/] [font-size:14px] GDP per Capita[font-size:6px]\n\n[font-size:20px bold]{mortality}[/] [font-size:14px] Year Life Expectancy";
 
   // Determines country color range
-  var minC = am4core.color("#ff0000");
-  var maxC = am4core.color("#ffd5d5");
-  if (props.vaccData !== 1 && props.dataParentToChild === 0) {
-    var temp = minC;
-    minC = maxC;
-    maxC = temp;
-  }
+  var minC = (props.vaccData !== 1 && props.dataParentToChild === 0) ? minColor : maxColor;
+  var maxC = (props.vaccData !== 1 && props.dataParentToChild === 0) ? maxColor : minColor;
   polygonSeries.heatRules.push({
-    property: "fill",
-    target: polygonSeries.mapPolygons.template,
-    min: minC, //#ff0000
-    max: maxC, // aec6cf
-    logarithmic: true // Added this because it adjust to concentration around the max or min
+    property: "fill", target: polygonSeries.mapPolygons.template,
+    min: minC, max: maxC, logarithmic: true
   });
 
   // Create Legend for Heat Map
@@ -196,9 +186,7 @@ function displayMap(props) {
   var polygonActiveState = polygonTemplate.states.create("active")
   polygonActiveState.properties.fill = activeCountryColor;
 
-  // adjust tooltip
-  bubbleSeries.tooltip.getStrokeFromObject = true;
-  bubbleSeries.tooltip.getFillFromObject = true;
+  // Adds tooltip for 
   bubbleSeries.tooltip.background.fillOpacity = 0.6;
   bubbleSeries.mapImages.template.fill = am4core.color("#de0000");
   bubbleSeries.mapImages.template.stroke = am4core.color("#ffffff");
@@ -223,17 +211,17 @@ function displayMap(props) {
   var circle = imageTemplate.createChild(am4core.Circle);
   circle.applyOnClones = true;
 
-  bubbleSeries.heatRules.push({"target": circle, "property": "radius", "min": 3, "max": 30, "dataField": "value"})
-  bubbleSeries.events.on("dataitemsvalidated", function() {
+  bubbleSeries.heatRules.push({ "target": circle, "property": "radius", "min": 3, "max": 30, "dataField": "value" })
+  bubbleSeries.events.on("dataitemsvalidated", function () {
     bubbleSeries.dataItems.each((dataItem) => {
       var mapImage = dataItem.mapImage;
       var circle = mapImage.children.getIndex(0);
-      if (mapImage.dataItem.value === 0) {circle.hide(0);}
-      else if (circle.isHidden || circle.isHiding) {circle.show();}
+      if (mapImage.dataItem.value === 0) { circle.hide(0); }
+      else if (circle.isHidden || circle.isHiding) { circle.show(); }
     })
   })
 
-  imageTemplate.adapter.add("latitude", function(latitude, target) {
+  imageTemplate.adapter.add("latitude", function (latitude, target) {
     var polygon = polygonSeries.getPolygonById(target.dataItem.id);
     if (polygon) {
       target.disabled = false;
@@ -245,7 +233,7 @@ function displayMap(props) {
     return latitude;
   });
 
-  imageTemplate.adapter.add("longitude", function(longitude, target) {
+  imageTemplate.adapter.add("longitude", function (longitude, target) {
     var polygon = polygonSeries.getPolygonById(target.dataItem.id);
     if (polygon) {
       target.disabled = false;
@@ -257,13 +245,19 @@ function displayMap(props) {
     return longitude;
   });
 
-  return {chart, polygonSeries};
+  return { chart, polygonSeries };
 }
 
 class WorldMap extends Component {
   constructor(props) {
     super(props);
-    this.state = {data: this.props.dataParentToChild, data2: this.props.vaccData, country: this.props.searchResult, sliderVal: this.props.sliderVal, buttonState: this.props.buttonState}
+    this.state = {
+      data: this.props.dataParentToChild,
+      data2: this.props.vaccData,
+      country: this.props.searchResult,
+      sliderVal: this.props.sliderVal,
+      buttonState: this.props.buttonState
+    }
   }
 
   runSearch(loc) {
@@ -273,16 +267,16 @@ class WorldMap extends Component {
     }
   }
 
-  componentDidMount() { 
+  componentDidMount() {
     let vals = displayMap(this.props);
     this.chart = vals.chart;
-    this.polygonSeries = vals.polygonSeries; 
+    this.polygonSeries = vals.polygonSeries;
   }
-  componentDidUpdate(prevProps) { 
+  componentDidUpdate(prevProps) {
     if (this.props.dataParentToChild !== prevProps.dataParentToChild ||
-        this.props.vaccData !== prevProps.vaccData || 
-        this.props.sliderVal !== prevProps.sliderVal) {
-      this.setState({data: this.props.dataParentToChild, sliderVal: this.props.sliderVal, data2: this.props.vaccData});
+      this.props.vaccData !== prevProps.vaccData ||
+      this.props.sliderVal !== prevProps.sliderVal) {
+      this.setState({ data: this.props.dataParentToChild, sliderVal: this.props.sliderVal, data2: this.props.vaccData });
       let vals = displayMap(this.props);
       this.chart = vals.chart;
       this.polygonSeries = vals.polygonSeries;
@@ -290,9 +284,9 @@ class WorldMap extends Component {
       this.runSearch(this.props.searchResult);
     }
   }
-  componentWillUnmount() { if (this.chart) { this.chart.dispose(); }  }
+  componentWillUnmount() { if (this.chart) { this.chart.dispose(); } }
   render() {
-    return (<div id="chartdiv" style={{width:"100%", height:"89vh"}}></div>);
+    return (<div id="chartdiv" style={{ width: "100%", height: "89vh" }}></div>);
   }
 }
 export default WorldMap;
